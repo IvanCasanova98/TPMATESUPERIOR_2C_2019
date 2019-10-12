@@ -3,10 +3,14 @@ from tkinter import *
 from tkinter import font, Tk, messagebox
 import utils
 from utils import Punto
+import Interpolacion
+from Interpolacion import *
 
 master: Tk = Tk()
 master.title("FINTER")
 master.geometry('640x480')
+
+metodo = Interpolacion(Lagrange())
 
 puntos = []
 x0 = StringVar()
@@ -44,6 +48,15 @@ EtiquetaX.place(x=10, y=100)
 EtiquetaY = tkinter.Label(master, text=formalizarlabellistasting("F(x)", map(lambda p: p.y, puntos)), font=fuente)
 EtiquetaY.place(x=10, y=120)
 
+lagrange = IntVar()
+NewtonGreg = IntVar()
+checkNewGreg = tkinter.Checkbutton(master, text="Interpolación polinómica de Lagrange", variable=lagrange,
+                                   state=DISABLED)
+checkNewGreg.place(x=10, y=160)
+checkLagrange = tkinter.Checkbutton(master, text="Interpolación polinómica Newton-Gregory", variable=NewtonGreg,
+                                    state=DISABLED)
+checkLagrange.place(x=10, y=180)
+
 
 def agregarrpuntos():
     global puntos
@@ -72,6 +85,14 @@ def actualizarlista():
     actualizarlabelpuntos()
     if len(puntos) > 1:
         verificarequidistancia(puntos)
+        activarCheckBox()
+
+
+def activarCheckBox():
+    global checkNewGreg
+    global checkLagrange
+    checkNewGreg['state'] = "normal"
+    checkLagrange['state'] = "normal"
 
 
 def actualizarlabelpuntos():
@@ -90,12 +111,12 @@ def verificarequidistancia(listapuntos):
         print("Los puntos no equidistan")
 
 
-lagrange = IntVar()
-NewtonGreg = IntVar()
-checkNewGreg = tkinter.Checkbutton(master, text="Interpolación polinómica de Lagrange", variable=lagrange)
-checkNewGreg.place(x=10, y=180)
-checkLagrange = tkinter.Checkbutton(master, text="Interpolación polinómica Newton-Gregory", variable=NewtonGreg)
-checkLagrange.place(x=10, y=160)
+def calcular():
+    metodo.calcularpolinomio(puntos)
+
+
 tkinter.Button(master, text="Agregar Punto", command=agregarrpuntos).place(x=200, y=50)
 tkinter.Button(master, text="Eliminar Punto", command=deletearpuntos).place(x=340, y=50)
+botonCalcular = tkinter.Button(master, text="Calcular Polinomio", command=calcular, relief=GROOVE)
+botonCalcular.place(x=15, y=260)
 master.mainloop()
