@@ -1,6 +1,9 @@
 import tkinter
 from tkinter import *
 from tkinter import font, Tk, messagebox
+
+from matplotlib.figure import Figure
+
 import utils
 from utils import Punto
 import Interpolacion
@@ -114,7 +117,7 @@ def verificarequidistancia(listapuntos):
 def calcular():
     metodo.calcularpolinomio(puntos)
 
-
+Figure
 tkinter.Button(master, text="Agregar Punto", command=agregarrpuntos).place(x=200, y=50)
 tkinter.Button(master, text="Eliminar Punto", command=deletearpuntos).place(x=340, y=50)
 botonCalcular = tkinter.Button(master, text="Calcular Polinomio", command=calcular, relief=GROOVE)

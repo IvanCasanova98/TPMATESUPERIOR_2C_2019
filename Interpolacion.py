@@ -6,7 +6,7 @@ from utils import Punto
 class Metodo(ABC):
     @abstractmethod
     def calcular(self, puntos):
-        passgh
+        pass
 
 
 class Lagrange(Metodo):
@@ -18,7 +18,9 @@ class Lagrange(Metodo):
             multiplicadoresDeLagrange.append(utils.calcularLx(punto, puntosx))
         Polinomio ="+".join(map(lambda lx, y: str(y)+"*"+lx, multiplicadoresDeLagrange,puntosy))
         print(Polinomio)
-        utils.simplificarFuncion(Polinomio)
+        PolinomioSimplificado=utils.simplificarFuncion(Polinomio)
+        utils.graficarPolinomio(PolinomioSimplificado, puntosx,puntosy)
+
 
 class Interpolacion():
 

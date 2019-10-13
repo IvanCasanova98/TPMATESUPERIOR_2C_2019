@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 from sympy import *
-
+import numpy as np
 import matplotlib.pyplot as plt
 
 x, y, z = symbols('x y z')
@@ -33,13 +33,15 @@ def puntosy(puntos):
 
 
 def entreParentesis(funcion):
-    return "("+ funcion + ")"
+    return "(" + funcion + ")"
 
 
 def escribirpunto(x, xi):
     xicambiado = xi * -1
-    return entreParentesis(x + str(xicambiado))
-
+    if xi > 0:
+        return entreParentesis(x + str(xicambiado))
+    else:
+        return entreParentesis(x + "+" + str(xicambiado))
 
 def calcularLx(x, listaX):
     numerador = ""
@@ -53,5 +55,25 @@ def calcularLx(x, listaX):
 
 
 def simplificarFuncion(funcion):
-    print(sympify(funcion))
+    print(expand(sympify(funcion)))
+    return expand(sympify(funcion))
 
+
+def pasarFuncionAPuntos(funcion, arrayPuntos):
+    y = []
+    for puntox in arrayPuntos:
+        if puntox > 0:
+            y.append(int(simplify(funcion.replace("x", entreParentesis(str(puntox))))))
+        else:
+            y.append(int(simplify(funcion.replace("x", entreParentesis(str(puntox))))))
+    # map(lambda puntox: int(simplify(funcion.replace("x", str(puntox)))), arrayPuntos)
+    print(*y)
+    return y
+
+
+def graficarPolinomio(funcion, puntosx, puntosy):
+    rango = range(puntosx[0], puntosx[-1] * 5)
+    x = rango
+    y = pasarFuncionAPuntos(str(funcion), rango)
+    plt.plot(x, y, 'r-', puntosx, puntosy, 'bs')
+    plt.show()
