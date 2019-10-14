@@ -47,8 +47,25 @@ class NewtonGregoryProgre(Metodo):
 
 class NewtonGregoryRegre(Metodo):
     def calcular(self,puntos):
-        return 1
-
+        puntosx = utils.puntosx(puntos)
+        puntosy = utils.puntosy(puntos)
+        if len(puntosx) == 1:
+            return puntosy[0]
+        i =0
+        ListasDiferencias=[puntosy]
+        while i < len(puntosx)-1:
+            ListasDiferencias.append(utils.diferenciaDeValoresListaNewtonLagrange(ListasDiferencias[i],puntosx,i+1))
+            i += 1
+        print(*ListasDiferencias)
+        UltimosValores = list(map(lambda listaDiferencia: listaDiferencia[-1], ListasDiferencias))
+        i=1
+        Polinomio= str(UltimosValores[0]) + "+"
+        puntosx.reverse()
+        while i < len(UltimosValores):
+            Polinomio += str(UltimosValores[i]) + "*" + utils.calcularTandaPuntos(puntosx[:i]) + "+"
+            i += 1
+        print(Polinomio[:-1])
+        return utils.simplificarFuncion(Polinomio[:-1])
 
 
 class Interpolacion():

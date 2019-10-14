@@ -194,6 +194,8 @@ def graficarPolinomio(funcion, puntosx, puntosy):
 def calcular():
     funcion = metodo.calcularpolinomio(puntos)
     graficarPolinomio(funcion, utils.puntosx(puntos), utils.puntosy(puntos))
+    print("Grado:" + utils.calcularGradoPolinomio(str(funcion)))
+
 
 Figure
 tkinter.Button(master, text="Agregar Punto", command=agregarrpuntos).place(x=200, y=50)

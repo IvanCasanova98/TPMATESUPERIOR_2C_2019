@@ -15,25 +15,24 @@ def diferenciaDeValoresLista(
     listanueva = []
     i = 0
     while i < len(lista) - 1:
-        listanueva.append(int(lista[i+1]) - int(lista[i]))
+        listanueva.append(int(lista[i + 1]) - int(lista[i]))
         i += 1
     return listanueva
 
+
 def diferenciaDeValoresListaNewtonLagrange(
-        lista,puntosx,salto):  # este va a servir para la interpol newtown siempre devuelve una lista con len(# lista
+        lista, puntosx, salto):  # este va a servir para la interpol newtown siempre devuelve una lista con len(# lista
     # anterior) -1
     listanueva = []
     i = 0
     while i < len(lista) - 1:
-        if (puntosx[salto])-(puntosx[i]) ==0:
+        if (puntosx[salto]) - (puntosx[i]) == 0:
             listanueva.append(0)
         else:
-            listanueva.append(((lista[i+1]) - (lista[i]))/((puntosx[salto])-(puntosx[i])))
+            listanueva.append(((lista[i + 1]) - (lista[i])) / ((puntosx[salto]) - (puntosx[i])))
         i += 1
-        salto+=1
+        salto += 1
     return listanueva
-
-
 
 
 def ordernarpuntos(puntos):
@@ -59,6 +58,7 @@ def escribirpunto(x, xi):
     else:
         return entreParentesis(x + "+" + str(xicambiado))
 
+
 def calcularLx(x, listaX):
     numerador = ""
     denominador = ""
@@ -71,7 +71,7 @@ def calcularLx(x, listaX):
 
 
 def calcularTandaPuntos(listaPuntos):
-    Tanda=""
+    Tanda = ""
     for punto in listaPuntos:
         Tanda += escribirpunto("x", punto) + "*"
 
@@ -95,4 +95,12 @@ def pasarFuncionAPuntos(funcion, arrayPuntos):
     return y
 
 
+def calcularGradoPolinomio(funcion):
+    pow = "*"
 
+    for grado in funcion:
+        if grado == pow:
+            return funcion[funcion.index(pow)+2]
+    if "x" in funcion:
+        return 1
+    return 0
