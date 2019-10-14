@@ -2,6 +2,7 @@ import tkinter
 from tkinter import *
 from tkinter import font, Tk, messagebox
 import matplotlib as plt
+
 plt.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
@@ -9,7 +10,7 @@ from Interpolacion import *
 
 master: Tk = Tk()
 master.title("FINTER")
-master.geometry('640x480')
+master.geometry('680x480')
 
 metodo = Interpolacion(Lagrange())
 
@@ -51,14 +52,72 @@ EtiquetaX.place(x=10, y=100)
 EtiquetaY = tkinter.Label(master, text=formalizarlabellistasting("F(x)", map(lambda p: p.y, puntos)), font=fuente)
 EtiquetaY.place(x=10, y=120)
 
+
+def actualizarCheckLagra():
+    global checkNewGreg
+    global checkRegresivo
+    global checkProgresivo
+    global checkLagrange
+    global metodo
+    checkLagrange.select()
+    checkProgresivo.deselect()
+    checkRegresivo.deselect()
+    checkProgresivo['state'] = DISABLED
+    checkRegresivo['state'] = DISABLED
+    checkNewGreg.deselect()
+    metodo = Interpolacion(Lagrange())
+
+
+def actualizarCheckNewGreg():
+    global checkLagrange
+    global checkRegresivo
+    global checkProgresivo
+    global checkNewGreg
+    global metodo
+    checkNewGreg.select()
+    checkProgresivo.select()
+    checkProgresivo['state'] = NORMAL
+    checkRegresivo['state'] = NORMAL
+    checkLagrange.deselect()
+    checkRegresivo.deselect()
+    metodo = Interpolacion(NewtonGregoryProgre())
+
+
+def actualizarCheckProgre():
+    global checkRegresivo
+    global checkProgresivo
+    global metodo
+    checkProgresivo.select()
+    checkRegresivo.deselect()
+    metodo = Interpolacion(NewtonGregoryProgre())
+
+def actualizarCheckRegre():
+    global checkRegresivo
+    global checkProgresivo
+    global metodo
+    checkProgresivo.deselect()
+    checkRegresivo.select()
+    metodo = Interpolacion(NewtonGregoryRegre())
+
+
+progresivo = IntVar()
+regresivo = IntVar()
 lagrange = IntVar()
 NewtonGreg = IntVar()
-checkNewGreg = tkinter.Checkbutton(master, text="Interpolación polinómica de Lagrange", variable=lagrange,
-                                   state=DISABLED)
-checkNewGreg.place(x=10, y=160)
-checkLagrange = tkinter.Checkbutton(master, text="Interpolación polinómica Newton-Gregory", variable=NewtonGreg,
-                                    state=DISABLED)
-checkLagrange.place(x=10, y=180)
+
+checkLagrange = tkinter.Checkbutton(master, text="Interpolación polinómica de Lagrange", variable=lagrange,
+                                    state=DISABLED, command=actualizarCheckLagra)
+checkLagrange.place(x=10, y=160)
+
+checkNewGreg = tkinter.Checkbutton(master, text="Interpolación polinómica Newton-Gregory", variable=NewtonGreg,
+                                   state=DISABLED, command=actualizarCheckNewGreg)
+checkNewGreg.place(x=10, y=180)
+checkProgresivo = tkinter.Checkbutton(master, text="Progresivo", variable=progresivo,
+                                      state=DISABLED, command=actualizarCheckProgre)
+checkProgresivo.place(x=30, y=200)
+checkRegresivo = tkinter.Checkbutton(master, text="Regresivo", variable=regresivo,
+                                     state=DISABLED, command=actualizarCheckRegre)
+checkRegresivo.place(x=30, y=220)
 
 
 def agregarrpuntos():
@@ -86,7 +145,7 @@ def actualizarlista():
     textX1.delete(0, END)
     textY1.delete(0, END)
     actualizarlabelpuntos()
-    if len(puntos) > 1:
+    if len(puntos) >= 1:
         verificarequidistancia(puntos)
         activarCheckBox()
 
@@ -96,6 +155,7 @@ def activarCheckBox():
     global checkLagrange
     checkNewGreg['state'] = "normal"
     checkLagrange['state'] = "normal"
+    checkLagrange.select()
 
 
 def actualizarlabelpuntos():
@@ -116,24 +176,23 @@ def verificarequidistancia(listapuntos):
 
 def graficarPolinomio(funcion, puntosx, puntosy):
     global labelFunction
-    rango = range(puntosx[0], puntosx[-1] * 5)
-    f = Figure(figsize=(3, 3), dpi=100)
+    rango = range(puntosx[0] * -5, puntosx[-1] * 5)
+    f = Figure(figsize=(4, 3), dpi=100)
     x = rango
     y = utils.pasarFuncionAPuntos(str(funcion), rango)
     a = f.add_subplot(111)
-    a.plot(x, y, 'r-', puntosx, puntosy, 'bs')
+    a.plot(x, y, 'r-', puntosx, puntosy, 'rs')
+    a.grid(linestyle='-', linewidth=1)
     canvas = FigureCanvasTkAgg(f, master)
     canvas.draw()
-    canvas.get_tk_widget().place(x=10,y=30)
-    canvas._tkcanvas.place(x=300, y=180)
-    labelFunction["text"]="Funcion hayada: " + str(funcion)
+    canvas.get_tk_widget().place(x=10, y=30)
+    canvas._tkcanvas.place(x=290, y=180)
+    labelFunction["text"] = "Funcion hallada: " + str(funcion)
 
 
 def calcular():
     funcion = metodo.calcularpolinomio(puntos)
-    graficarPolinomio(funcion,utils.puntosx(puntos),utils.puntosy(puntos))
-
-
+    graficarPolinomio(funcion, utils.puntosx(puntos), utils.puntosy(puntos))
 
 Figure
 tkinter.Button(master, text="Agregar Punto", command=agregarrpuntos).place(x=200, y=50)

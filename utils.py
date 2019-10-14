@@ -15,7 +15,7 @@ def diferenciaDeValoresLista(
     listanueva = []
     i = 0
     while i < len(lista) - 1:
-        listanueva.append(int(lista[i]) - int(lista[i + 1]))
+        listanueva.append(int(lista[i+1]) - int(lista[i]))
         i += 1
     return listanueva
 
@@ -52,6 +52,14 @@ def calcularLx(x, listaX):
             denominador += escribirpunto(str(x), puntox) + "*"
     lx = entreParentesis(numerador[:-1]) + "/" + entreParentesis(denominador[:-1])
     return lx
+
+
+def calcularTandaPuntos(listaPuntos):
+    Tanda=""
+    for punto in listaPuntos:
+        Tanda += escribirpunto("x", punto) + "*"
+
+    return Tanda[:-1]
 
 
 def simplificarFuncion(funcion):
