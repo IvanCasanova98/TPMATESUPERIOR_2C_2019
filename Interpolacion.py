@@ -32,7 +32,7 @@ class NewtonGregoryProgre(Metodo):
         i =0
         ListasDiferencias=[puntosy]
         while i < len(puntosx)-1:
-            ListasDiferencias.append(utils.diferenciaDeValoresLista(ListasDiferencias[i]))
+            ListasDiferencias.append(utils.diferenciaDeValoresListaNewtonLagrange(ListasDiferencias[i],puntosx,i+1))
             #faltadividir cuando no son equidistantes
             i += 1
         print(*ListasDiferencias)

@@ -19,6 +19,22 @@ def diferenciaDeValoresLista(
         i += 1
     return listanueva
 
+def diferenciaDeValoresListaNewtonLagrange(
+        lista,puntosx,salto):  # este va a servir para la interpol newtown siempre devuelve una lista con len(# lista
+    # anterior) -1
+    listanueva = []
+    i = 0
+    while i < len(lista) - 1:
+        if int(puntosx[salto])-int(puntosx[i]) ==0:
+            listanueva.append(0)
+        else:
+            listanueva.append((int(lista[i+1]) - int(lista[i]))//(int(puntosx[salto])-int(puntosx[i])))
+        i += 1
+        salto += 1
+    return listanueva
+
+
+
 
 def ordernarpuntos(puntos):
     return sorted(puntos, key=lambda tup: tup[0])

@@ -155,7 +155,8 @@ def activarCheckBox():
     global checkLagrange
     checkNewGreg['state'] = "normal"
     checkLagrange['state'] = "normal"
-    checkLagrange.select()
+    actualizarCheckLagra() 
+
 
 
 def actualizarlabelpuntos():
