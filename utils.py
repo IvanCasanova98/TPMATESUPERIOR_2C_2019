@@ -25,12 +25,12 @@ def diferenciaDeValoresListaNewtonLagrange(
     listanueva = []
     i = 0
     while i < len(lista) - 1:
-        if int(puntosx[salto])-int(puntosx[i]) ==0:
+        if (puntosx[salto])-(puntosx[i]) ==0:
             listanueva.append(0)
         else:
-            listanueva.append((int(lista[i+1]) - int(lista[i]))//(int(puntosx[salto])-int(puntosx[i])))
+            listanueva.append(((lista[i+1]) - (lista[i]))/((puntosx[salto])-(puntosx[i])))
         i += 1
-        salto += 1
+        salto+=1
     return listanueva
 
 

@@ -33,14 +33,13 @@ class NewtonGregoryProgre(Metodo):
         ListasDiferencias=[puntosy]
         while i < len(puntosx)-1:
             ListasDiferencias.append(utils.diferenciaDeValoresListaNewtonLagrange(ListasDiferencias[i],puntosx,i+1))
-            #faltadividir cuando no son equidistantes
             i += 1
         print(*ListasDiferencias)
         PrimerosValores = list(map(lambda listaDiferencia: listaDiferencia[0], ListasDiferencias))
         i=1
         Polinomio= str(PrimerosValores[0]) + "+"
         while i < len(PrimerosValores):
-            Polinomio += str(PrimerosValores[i]) + "/"+ str(i)+ "*" + utils.calcularTandaPuntos(puntosx[:i]) + "+"
+            Polinomio += str(PrimerosValores[i]) + "*" + utils.calcularTandaPuntos(puntosx[:i]) + "+"
             i += 1
         print(Polinomio[:-1])
         return utils.simplificarFuncion(Polinomio[:-1])
