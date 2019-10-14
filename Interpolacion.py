@@ -6,20 +6,20 @@ from utils import Punto
 class Metodo(ABC):
     @abstractmethod
     def calcular(self, puntos):
+        return
         pass
 
 
 class Lagrange(Metodo):
     def calcular(self, puntos):
-        puntosx= utils.puntosx(puntos)
-        puntosy=utils.puntosy(puntos)
+        puntosx = utils.puntosx(puntos)
+        puntosy = utils.puntosy(puntos)
         multiplicadoresDeLagrange = []
         for punto in puntosx:
             multiplicadoresDeLagrange.append(utils.calcularLx(punto, puntosx))
-        Polinomio ="+".join(map(lambda lx, y: str(y)+"*"+lx, multiplicadoresDeLagrange,puntosy))
+        Polinomio = "+".join(map(lambda lx, y: str(y) + "*" + lx, multiplicadoresDeLagrange, puntosy))
         print(Polinomio)
-        PolinomioSimplificado=utils.simplificarFuncion(Polinomio)
-        utils.graficarPolinomio(PolinomioSimplificado, puntosx,puntosy)
+        return utils.simplificarFuncion(Polinomio)
 
 
 class Interpolacion():
@@ -37,9 +37,3 @@ class Interpolacion():
 
     def calcularpolinomio(self, puntos) -> None:
         return self._strategy.calcular(puntos)
-
-
-
-
-
-

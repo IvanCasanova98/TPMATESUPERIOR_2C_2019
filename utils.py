@@ -71,9 +71,4 @@ def pasarFuncionAPuntos(funcion, arrayPuntos):
     return y
 
 
-def graficarPolinomio(funcion, puntosx, puntosy):
-    rango = range(puntosx[0], puntosx[-1] * 5)
-    x = rango
-    y = pasarFuncionAPuntos(str(funcion), rango)
-    plt.plot(x, y, 'r-', puntosx, puntosy, 'bs')
-    plt.show()
+

@@ -1,12 +1,10 @@
 import tkinter
 from tkinter import *
 from tkinter import font, Tk, messagebox
-
+import matplotlib as plt
+plt.use("TkAgg")
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
-
-import utils
-from utils import Punto
-import Interpolacion
 from Interpolacion import *
 
 master: Tk = Tk()
@@ -21,6 +19,8 @@ y0 = StringVar()
 
 fuente = font.Font(weight='bold')
 tkinter.Label(master, text="X", font=fuente).place(x=240, y=0)
+labelFunction = tkinter.Label(master, text="", font=fuente)
+labelFunction.place(x=300, y=160)
 tkinter.Label(master, text="F(X)", font=fuente).place(x=360, y=0)
 
 textX1 = tkinter.Entry(master, textvariable=x0)
@@ -114,8 +114,26 @@ def verificarequidistancia(listapuntos):
         print("Los puntos no equidistan")
 
 
+def graficarPolinomio(funcion, puntosx, puntosy):
+    global labelFunction
+    rango = range(puntosx[0], puntosx[-1] * 5)
+    f = Figure(figsize=(3, 3), dpi=100)
+    x = rango
+    y = utils.pasarFuncionAPuntos(str(funcion), rango)
+    a = f.add_subplot(111)
+    a.plot(x, y, 'r-', puntosx, puntosy, 'bs')
+    canvas = FigureCanvasTkAgg(f, master)
+    canvas.draw()
+    canvas.get_tk_widget().place(x=10,y=30)
+    canvas._tkcanvas.place(x=300, y=180)
+    labelFunction["text"]="Funcion hayada: " + str(funcion)
+
+
 def calcular():
-    metodo.calcularpolinomio(puntos)
+    funcion = metodo.calcularpolinomio(puntos)
+    graficarPolinomio(funcion,utils.puntosx(puntos),utils.puntosy(puntos))
+
+
 
 Figure
 tkinter.Button(master, text="Agregar Punto", command=agregarrpuntos).place(x=200, y=50)
