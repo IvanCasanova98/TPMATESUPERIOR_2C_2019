@@ -1,5 +1,4 @@
 from collections import namedtuple
-
 from sympy import *
 import numpy as np
 import matplotlib.pyplot as plt
@@ -96,11 +95,19 @@ def pasarFuncionAPuntos(funcion, arrayPuntos):
 
 
 def calcularGradoPolinomio(funcion):
-    pow = "*"
-
-    for grado in funcion:
-        if grado == pow:
-            return str(funcion[funcion.index(pow)+2])
+    pow = '**'
+    if str(funcion).find(pow)!=-1:
+        return str(funcion[funcion.find(pow)+2])
     if "x" in funcion:
         return '1'
     return '0'
+
+
+def ParsearALx(lista):
+    i=0
+    listaNueva=[]
+    while i < len(lista):
+        listaNueva.append("LX " + str(i) + " = "+ lista[0])
+        i+=1
+    return listaNueva
+

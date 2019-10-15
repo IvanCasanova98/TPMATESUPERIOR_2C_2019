@@ -9,6 +9,7 @@ verify_ssl = true
 pyglet = "*"
 sympy = "*"
 matplotlib = "*"
+image = "*"
 
 [requires]
 python_version = "3.7"

@@ -2,6 +2,8 @@ import tkinter
 from functools import partial
 from tkinter import *
 from tkinter import font, Tk, messagebox
+from tkinter.ttk import Sizegrip
+from PIL import ImageTk, Image
 import matplotlib as plt
 
 plt.use("TkAgg")
@@ -11,8 +13,8 @@ from Interpolacion import *
 
 master: Tk = Tk()
 master.title("FINTER")
-master.geometry('680x480')
-
+master.geometry('680x485')
+master.resizable(0,0)
 metodo = Interpolacion(Lagrange())
 
 puntos = []
@@ -126,6 +128,7 @@ def agregarrpuntos():
     punto = Punto(int(x0.get()), int(y0.get()))
     puntos.append(punto)
     actualizarlista()
+    calcular()
 
 
 def deletearpuntos():
@@ -179,31 +182,62 @@ def verificarequidistancia(listapuntos):
 def graficarPolinomio(funcion, puntosx, puntosy):
     global labelFunction
     rango = range(puntosx[0] * -5, puntosx[-1] * 5)
-    f = Figure(figsize=(4, 3), dpi=100)
+    f = Figure(figsize=(4, 4), dpi=100)
     x = rango
     y = utils.pasarFuncionAPuntos(str(funcion), rango)
     a = f.add_subplot(111)
-    a.plot(x, y, 'r-', puntosx, puntosy, 'rs')
+    a.plot(x, y, 'r-',label= "F(x)="+str(funcion))
+    a.plot(puntosx, puntosy, 'k.',label="Puntos")
+    a.legend()
     a.grid(linestyle='-', linewidth=1)
     canvas = FigureCanvasTkAgg(f, master)
     canvas.draw()
     canvas.get_tk_widget().place(x=10, y=30)
-    canvas._tkcanvas.place(x=290, y=180)
-    labelFunction["text"] = "Funcion hallada: " + str(funcion)
+    canvas._tkcanvas.place(x=290, y=105)
+    messagebox.showinfo("Polinomio encontrado", "F(x) = " + str(funcion))
 
 
 def calcular():
+
+    metodo.strategy.historia=[]
     metodo.calcularpolinomio(puntos)
     graficarPolinomio(metodo.polinomio, utils.puntosx(puntos), utils.puntosy(puntos))
     print("Grado:" + utils.calcularGradoPolinomio(str(metodo.polinomio)))
+    print(*metodo.strategy.historia)
 
 
 def quit():
     global master
     master.destroy()
 
+
 def pasar():
     pass
+
+
+def insertarLista(listbox, listaLxODiferencias):
+    for lxOd in listaLxODiferencias[0]:
+        listbox.insert(END,lxOd)
+    listbox.insert(END,"Polinomio final = " + listaLxODiferencias[1])
+    listbox.insert(END,"Polinomio simplificado = " + str(listaLxODiferencias[2]))
+
+
+
+def pantallaHistorial():
+    win=Toplevel(master)
+    win.title("Pasos")
+    win.geometry('640x480')
+    img = ImageTk.PhotoImage(file=metodo.strategy.definicionPhoto())
+    panel = Label(win, image=img)
+    panel.image=img
+    #panel.image = "C:/Users/Ivan/PycharmProjects/TPMATESUPERIOR_2C_2019/megamanX.jpg"
+    panel.pack(side=TOP, expand = "yes")
+    scrollbar = Scrollbar(win)
+    scrollbar.pack(side=RIGHT, fill=Y)
+    listbox = Listbox(win, yscrollcommand=scrollbar.set)
+    insertarLista(listbox,metodo.strategy.historia)
+    listbox.pack(fill=BOTH,expand=1)
+    scrollbar.config(command=listbox.yview)
 
 
 def pantallaValorK():
@@ -234,15 +268,14 @@ def quitK(win):
 def calcularK():
     global metodo
     global k0
-
     fk = str(metodo.polinomio).replace('x', str(k0.get()))
-    messagebox.showinfo("Warning", utils.simplificarFuncion(fk))
+    messagebox.showinfo("Information","P("+str(k0.get())+") = " + str(utils.simplificarFuncion(fk)))
 
 
 Figure
-tkinter.Button(master, text="Agregar/Alterar Punto", command=agregarrpuntos).place(x=200, y=50)
+tkinter.Button(master, text="Agregar/Alterar Punto", command=agregarrpuntos).place(x=186, y=50)
 tkinter.Button(master, text="Eliminar Punto", command=deletearpuntos).place(x=340, y=50)
-tkinter.Button(master, text="Mostrar pasos de cálculo", command=deletearpuntos, width=35).place(x=15, y=300)
+tkinter.Button(master, text="Mostrar pasos de cálculo", command=pantallaHistorial, width=35).place(x=15, y=300)
 botonPoliK=tkinter.Button(master, text="Especializar el polinomio en un valor K", command=pantallaValorK, width=35)
 botonPoliK.place(x=15, y=340)
 tkinter.Button(master, text="Finalizar", command=quit,width=35).place(x=15, y=380)
