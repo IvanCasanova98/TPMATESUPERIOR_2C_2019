@@ -1,4 +1,5 @@
 import tkinter
+from functools import partial
 from tkinter import *
 from tkinter import font, Tk, messagebox
 import matplotlib as plt
@@ -17,13 +18,13 @@ metodo = Interpolacion(Lagrange())
 puntos = []
 x0 = StringVar()
 y0 = StringVar()
+k0 = IntVar()
 
 fuente = font.Font(weight='bold')
 tkinter.Label(master, text="X", font=fuente).place(x=240, y=0)
 labelFunction = tkinter.Label(master, text="", font=fuente)
 labelFunction.place(x=300, y=160)
 tkinter.Label(master, text="F(X)", font=fuente).place(x=360, y=0)
-
 textX1 = tkinter.Entry(master, textvariable=x0)
 textY1 = tkinter.Entry(master, textvariable=y0)
 textX1.place(x=190, y=30)
@@ -192,14 +193,59 @@ def graficarPolinomio(funcion, puntosx, puntosy):
 
 
 def calcular():
-    funcion = metodo.calcularpolinomio(puntos)
-    graficarPolinomio(funcion, utils.puntosx(puntos), utils.puntosy(puntos))
-    print("Grado:" + utils.calcularGradoPolinomio(str(funcion)))
+    metodo.calcularpolinomio(puntos)
+    graficarPolinomio(metodo.polinomio, utils.puntosx(puntos), utils.puntosy(puntos))
+    print("Grado:" + utils.calcularGradoPolinomio(str(metodo.polinomio)))
+
+
+def quit():
+    global master
+    master.destroy()
+
+def pasar():
+    pass
+
+
+def pantallaValorK():
+    global botonPoliK
+    global k0
+    global master
+    win = Toplevel(master)
+    win.title("Valor K")
+    win.geometry('320x240')
+    textK = tkinter.Entry(win, textvariable=k0)
+    textK.place(x=100, y=60)
+    botonPoliK['state'] = DISABLED
+    botonVolver = tkinter.Button(win, text="Volver", command=partial(quitK, win))
+    botonVolver.place(x=105, y=80)
+    botonCalcularK= tkinter.Button(win, text="Calcular", command=calcularK)
+    botonCalcularK.place(x=165, y=80)
+ #   Etiquetak = tkinter.Label(win, text="P(k) =", font=fuente)
+  #  Etiquetak.place(x=0, y=180)
+    win.protocol("WM_DELETE_WINDOW", pasar)
+
+
+def quitK(win):
+    global botonPoliK
+    win.destroy()
+    botonPoliK['state'] = NORMAL
+
+
+def calcularK():
+    global metodo
+    global k0
+
+    fk = str(metodo.polinomio).replace('x', str(k0.get()))
+    messagebox.showinfo("Warning", utils.simplificarFuncion(fk))
 
 
 Figure
-tkinter.Button(master, text="Agregar Punto", command=agregarrpuntos).place(x=200, y=50)
+tkinter.Button(master, text="Agregar/Alterar Punto", command=agregarrpuntos).place(x=200, y=50)
 tkinter.Button(master, text="Eliminar Punto", command=deletearpuntos).place(x=340, y=50)
-botonCalcular = tkinter.Button(master, text="Calcular Polinomio", command=calcular, relief=GROOVE)
+tkinter.Button(master, text="Mostrar pasos de cálculo", command=deletearpuntos, width=35).place(x=15, y=300)
+botonPoliK=tkinter.Button(master, text="Especializar el polinomio en un valor K", command=pantallaValorK, width=35)
+botonPoliK.place(x=15, y=340)
+tkinter.Button(master, text="Finalizar", command=quit,width=35).place(x=15, y=380)
+botonCalcular = tkinter.Button(master, text="Calcular Polinomio", command=calcular,width=35)
 botonCalcular.place(x=15, y=260)
 master.mainloop()

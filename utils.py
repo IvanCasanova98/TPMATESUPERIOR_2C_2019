@@ -100,7 +100,7 @@ def calcularGradoPolinomio(funcion):
 
     for grado in funcion:
         if grado == pow:
-            return funcion[funcion.index(pow)+2]
+            return str(funcion[funcion.index(pow)+2])
     if "x" in funcion:
-        return 1
-    return 0
+        return '1'
+    return '0'

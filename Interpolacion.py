@@ -69,6 +69,7 @@ class NewtonGregoryRegre(Metodo):
 
 
 class Interpolacion():
+    polinomio=""
 
     def __init__(self, strategy: Metodo) -> None:
         self._strategy = strategy
@@ -82,4 +83,4 @@ class Interpolacion():
         self._strategy = strategy
 
     def calcularpolinomio(self, puntos) -> None:
-        return self._strategy.calcular(puntos)
+        self.polinomio = self._strategy.calcular(puntos)
