@@ -150,7 +150,6 @@ def actualizarlista():
     textY1.delete(0, END)
     actualizarlabelpuntos()
     if len(puntos) >= 1:
-        verificarequidistancia(puntos)
         activarCheckBox()
 
 
@@ -174,9 +173,9 @@ def actualizarlabelpuntos():
 
 def verificarequidistancia(listapuntos):
     if len(set(utils.diferenciaDeValoresLista(utils.puntosx(listapuntos)))) == 1:
-        print("Los puntos son equidistantes")
+        return "Los puntos son equidistantes"
     else:
-        print("Los puntos no equidistan")
+        return "Los puntos no equidistan"
 
 
 def graficarPolinomio(funcion, puntosx, puntosy):
@@ -198,12 +197,11 @@ def graficarPolinomio(funcion, puntosx, puntosy):
 
 
 def calcular():
-
     metodo.strategy.historia=[]
     metodo.calcularpolinomio(puntos)
     graficarPolinomio(metodo.polinomio, utils.puntosx(puntos), utils.puntosy(puntos))
-    print("Grado:" + utils.calcularGradoPolinomio(str(metodo.polinomio)))
-    print(*metodo.strategy.historia)
+    metodo.strategy.historia.append(verificarequidistancia(puntos))
+    metodo.strategy.historia.append("Grado:" + utils.calcularGradoPolinomio(str(metodo.polinomio)))
 
 
 def quit():
@@ -220,7 +218,6 @@ def insertarLista(listbox, listaLxODiferencias):
         listbox.insert(END,lxOd)
     listbox.insert(END,"Polinomio final = " + listaLxODiferencias[1])
     listbox.insert(END,"Polinomio simplificado = " + str(listaLxODiferencias[2]))
-
 
 
 def pantallaHistorial():

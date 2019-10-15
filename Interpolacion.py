@@ -34,7 +34,6 @@ class Lagrange(Metodo):
             multiplicadoresDeLagrange.append(utils.calcularLx(punto, puntosx))
         self.historia.append(utils.ParsearALx(multiplicadoresDeLagrange))
         Polinomio = "+".join(map(lambda lx, y: str(y) + "*" + lx, multiplicadoresDeLagrange, puntosy))
-        print(Polinomio)
         self.historia.append(Polinomio)
         self.historia.append(utils.simplificarFuncion(Polinomio))
         return utils.simplificarFuncion(Polinomio)
@@ -55,15 +54,19 @@ class NewtonGregoryProgre(Metodo):
         while i < len(puntosx) - 1:
             ListasDiferencias.append(utils.diferenciaDeValoresListaNewtonLagrange(ListasDiferencias[i], puntosx, i + 1))
             i += 1
-        print(*ListasDiferencias)
+        self.historia.append(utils.ParsearAΔ(ListasDiferencias))
         PrimerosValores = list(map(lambda listaDiferencia: listaDiferencia[0], ListasDiferencias))
         i = 1
         Polinomio = str(PrimerosValores[0]) + "+"
         while i < len(PrimerosValores):
             Polinomio += str(PrimerosValores[i]) + "*" + utils.calcularTandaPuntos(puntosx[:i]) + "+"
             i += 1
-        print(Polinomio[:-1])
+        self.historia.append(Polinomio[:-1])
+        self.historia.append(utils.simplificarFuncion(Polinomio[:-1]))
         return utils.simplificarFuncion(Polinomio[:-1])
+
+    def definicionPhoto(self):
+        return "NewtonGregory.gif"
 
 
 class NewtonGregoryRegre(Metodo):
@@ -78,6 +81,8 @@ class NewtonGregoryRegre(Metodo):
         while i < len(puntosx) - 1:
             ListasDiferencias.append(utils.diferenciaDeValoresListaNewtonLagrange(ListasDiferencias[i], puntosx, i + 1))
             i += 1
+        #print(*ListasDiferencias)
+        self.historia.append(utils.ParsearAΔ(ListasDiferencias))
         print(*ListasDiferencias)
         UltimosValores = list(map(lambda listaDiferencia: listaDiferencia[-1], ListasDiferencias))
         i = 1
@@ -86,8 +91,12 @@ class NewtonGregoryRegre(Metodo):
         while i < len(UltimosValores):
             Polinomio += str(UltimosValores[i]) + "*" + utils.calcularTandaPuntos(puntosx[:i]) + "+"
             i += 1
-        print(Polinomio[:-1])
+        self.historia.append(Polinomio[:-1])
+        self.historia.append(utils.simplificarFuncion(Polinomio[:-1]))
         return utils.simplificarFuncion(Polinomio[:-1])
+
+    def definicionPhoto(self):
+        return "NewtonGregory.gif"
 
 
 class Interpolacion():

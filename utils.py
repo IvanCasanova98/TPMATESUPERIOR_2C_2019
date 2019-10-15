@@ -107,7 +107,17 @@ def ParsearALx(lista):
     i=0
     listaNueva=[]
     while i < len(lista):
-        listaNueva.append("LX " + str(i) + " = "+ lista[0])
+        listaNueva.append("LX " + str(i) + " = "+ lista[i])
         i+=1
     return listaNueva
 
+
+def ParsearAΔ(lista):
+    i=0
+    listaNueva=[]
+
+    while i<len(lista):
+        lista[i] = list(map(lambda x: str(x), lista[i]))
+        listaNueva.append("Δ^" + str(i) + "F = [" + ", ".join(lista[i]) + " ]")
+        i+=1
+    return listaNueva
