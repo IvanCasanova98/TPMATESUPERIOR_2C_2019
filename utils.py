@@ -121,3 +121,5 @@ def ParsearAΔ(lista):
         listaNueva.append("Δ^" + str(i) + "F = [" + ", ".join(lista[i]) + " ]")
         i+=1
     return listaNueva
+
+

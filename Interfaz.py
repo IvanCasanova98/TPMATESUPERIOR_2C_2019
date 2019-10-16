@@ -125,20 +125,26 @@ checkRegresivo.place(x=30, y=220)
 
 def agregarrpuntos():
     global puntos
-    punto = Punto(int(x0.get()), int(y0.get()))
-    puntos.append(punto)
-    actualizarlista()
-    calcular()
+    if x0.get().isnumeric() & y0.get().isnumeric():
+        punto = Punto(int(x0.get()), int(y0.get()))
+        puntos.append(punto)
+        actualizarlista()
+        calcular()
+    else:
+        messagebox.showinfo("Warning", "Punto debe estar compuesto de numeros")
 
 
 def deletearpuntos():
     global puntos
-    punto = Punto(int(x0.get()), int(y0.get()))
-    if punto in puntos:
-        puntos.remove(punto)
-        actualizarlista()
+    if x0.get().isnumeric() & y0.get().isnumeric():
+        punto = Punto(int(x0.get()), int(y0.get()))
+        if punto in puntos:
+            puntos.remove(punto)
+            actualizarlista()
+        else:
+            messagebox.showinfo("Warning", "El punto no se encuentra en la lista")
     else:
-        messagebox.showinfo("Warning", "El punto no se encuentra en la lista")
+        messagebox.showinfo("Warning", "Punto debe estar compuesto de numeros")
 
 
 def actualizarlista():
@@ -151,6 +157,7 @@ def actualizarlista():
     actualizarlabelpuntos()
     if len(puntos) >= 1:
         activarCheckBox()
+
 
 
 def activarCheckBox():
@@ -185,7 +192,7 @@ def graficarPolinomio(funcion, puntosx, puntosy):
     x = rango
     y = utils.pasarFuncionAPuntos(str(funcion), rango)
     a = f.add_subplot(111)
-    a.plot(x, y, 'r-',label= "F(x)="+str(funcion))
+    a.plot(x, y, 'r-',label= "P(x)="+str(funcion))
     a.plot(puntosx, puntosy, 'k.',label="Puntos")
     a.legend()
     a.grid(linestyle='-', linewidth=1)
@@ -196,12 +203,23 @@ def graficarPolinomio(funcion, puntosx, puntosy):
     messagebox.showinfo("Polinomio encontrado", "F(x) = " + str(funcion))
 
 
+def activarBotones():
+    global botonPoliK
+    global botonHistorial
+    botonPoliK['state'] = NORMAL
+    botonHistorial['state'] = NORMAL
+
+
 def calcular():
-    metodo.strategy.historia=[]
-    metodo.calcularpolinomio(puntos)
-    graficarPolinomio(metodo.polinomio, utils.puntosx(puntos), utils.puntosy(puntos))
-    metodo.strategy.historia.append(verificarequidistancia(puntos))
-    metodo.strategy.historia.append("Grado:" + utils.calcularGradoPolinomio(str(metodo.polinomio)))
+    if puntos:
+        metodo.strategy.historia=[]
+        metodo.calcularpolinomio(puntos)
+        graficarPolinomio(metodo.polinomio, utils.puntosx(puntos), utils.puntosy(puntos))
+        metodo.strategy.historia.append(verificarequidistancia(puntos))
+        metodo.strategy.historia.append("Grado:" + utils.calcularGradoPolinomio(str(metodo.polinomio)))
+        activarBotones()
+    else:
+        messagebox.showinfo("Warning", "La lista de puntos esta vacia, complete los campos y haga click en 'Agregar/Alterar Punto'")
 
 
 def quit():
@@ -235,6 +253,7 @@ def pantallaHistorial():
     insertarLista(listbox,metodo.strategy.historia)
     listbox.pack(fill=BOTH,expand=1)
     scrollbar.config(command=listbox.yview)
+    win.protocol("WM_DELETE_WINDOW", pasar)
 
 
 def pantallaValorK():
@@ -265,15 +284,19 @@ def quitK(win):
 def calcularK():
     global metodo
     global k0
-    fk = str(metodo.polinomio).replace('x', str(k0.get()))
-    messagebox.showinfo("Information","P("+str(k0.get())+") = " + str(utils.simplificarFuncion(fk)))
+    if k0.get().isnumeric():
+        fk = str(metodo.polinomio).replace('x', str(k0.get()))
+        messagebox.showinfo("Information","P("+str(k0.get())+") = " + str(utils.simplificarFuncion(fk)))
+    else:
+        messagebox.showinfo("Warning", "Valor mal ingresado, porfavor ingrese un numero")
 
 
 Figure
 tkinter.Button(master, text="Agregar/Alterar Punto", command=agregarrpuntos).place(x=186, y=50)
 tkinter.Button(master, text="Eliminar Punto", command=deletearpuntos).place(x=340, y=50)
-tkinter.Button(master, text="Mostrar pasos de cálculo", command=pantallaHistorial, width=35).place(x=15, y=300)
-botonPoliK=tkinter.Button(master, text="Especializar el polinomio en un valor K", command=pantallaValorK, width=35)
+botonHistorial=tkinter.Button(master, text="Mostrar pasos de cálculo", command=pantallaHistorial, width=35,state=DISABLED)
+botonHistorial.place(x=15, y=300)
+botonPoliK=tkinter.Button(master, text="Especializar el polinomio en un valor K", command=pantallaValorK, width=35,state=DISABLED)
 botonPoliK.place(x=15, y=340)
 tkinter.Button(master, text="Finalizar", command=quit,width=35).place(x=15, y=380)
 botonCalcular = tkinter.Button(master, text="Calcular Polinomio", command=calcular,width=35)
