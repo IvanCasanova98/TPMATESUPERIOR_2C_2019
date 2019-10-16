@@ -1,7 +1,6 @@
 from collections import namedtuple
 from sympy import *
-import numpy as np
-import matplotlib.pyplot as plt
+
 
 x, y, z = symbols('x y z')
 init_printing(use_unicode=True)

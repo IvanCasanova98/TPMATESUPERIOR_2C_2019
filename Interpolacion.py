@@ -1,7 +1,5 @@
 from abc import abstractmethod, ABC
 import utils
-from utils import Punto
-
 
 
 class Metodo(ABC):
@@ -42,7 +40,6 @@ class Lagrange(Metodo):
         return "Lagrange.gif"
 
 
-
 class NewtonGregoryProgre(Metodo):
     def calcular(self, puntos):
         puntosx = utils.puntosx(puntos)
@@ -81,7 +78,7 @@ class NewtonGregoryRegre(Metodo):
         while i < len(puntosx) - 1:
             ListasDiferencias.append(utils.diferenciaDeValoresListaNewtonLagrange(ListasDiferencias[i], puntosx, i + 1))
             i += 1
-        #print(*ListasDiferencias)
+        # print(*ListasDiferencias)
         self.historia.append(utils.ParsearAΔ(ListasDiferencias))
         print(*ListasDiferencias)
         UltimosValores = list(map(lambda listaDiferencia: listaDiferencia[-1], ListasDiferencias))
